@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  task-service-db:
+    container_name: task-service-db
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_TASK_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_TASK_PW}
+      POSTGRES_DB: ${POSTGRES_TASK_DB}
+    ports:
+      - "5434:5432"
+    restart: always
+    volumes:
+      # /var/lib/postgresql/data (це стандартний шлях Postgres)
+      - task-data:/var/lib/postgresql/data
+
+  billing-service-db:
+    container_name: billing-service-db
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_BILLING_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_BILLING_PW}
+      POSTGRES_DB: ${POSTGRES_BILLING_DB}
+    ports:
+      - "5433:5432" # Зовнішній порт 5433, внутрішній стандартний 5432
+    restart: always
+    volumes:
+      - billing-data:/var/lib/postgresql/data
+
+  rabbitmq-saga:
+    # rabbitmq:3-management (включає UI "з коробки")
+    image: rabbitmq:3-management
+    container_name: rabbitmq-saga
+    restart: always
+    ports:
+      - "5672:5672" # Протокол AMQP (для NestJS)
+      - "15672:15672" # Management UI (для браузера)
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq/
+      - rabbitmq-log:/var/log/rabbitmq
+
+volumes:
+  task-data:
+  billing-data:
+  rabbitmq-data:
+  rabbitmq-log:
