@@ -28,6 +28,7 @@ export class RmqModule {
                   urls: [configService.get<string>('RABBITMQ_URI') || ''],
                   queue: configService.get<string>(`RABBITMQ_${name}_QUEUE`),
                   noAck: false,
+                  persistent: true,
                 },
               };
             },
