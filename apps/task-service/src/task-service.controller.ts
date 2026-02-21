@@ -11,7 +11,6 @@ export class TaskServiceController {
     return this.taskServiceService.getHello();
   }
 
-  @HttpCode(201)
   @Post()
   createTask(@Body() createTaskDto: CreateTaskDto) {
     return this.taskServiceService.createTask(createTaskDto);

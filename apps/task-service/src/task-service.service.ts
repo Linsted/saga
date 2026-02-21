@@ -30,5 +30,7 @@ export class TaskServiceService {
     );
 
     await lastValueFrom(this.billingClient.emit('task_created', createdEvent));
+
+    return savedTask;
   }
 }
