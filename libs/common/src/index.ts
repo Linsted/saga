@@ -4,3 +4,4 @@ export * from './rmq/rmq.module';
 export * from './rmq/rmq.service';
 export * from './dto/create-task.dto';
 export * from './dto/saga.events';
+export * from './enums/task-status.enum';
